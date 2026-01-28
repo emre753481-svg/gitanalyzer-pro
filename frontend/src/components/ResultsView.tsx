@@ -1,6 +1,6 @@
 // Results View Component
 import React, { useEffect, useState } from 'react';
-import { Download, FileText, FileJson, FileCode } from 'lucide-react';
+import { FileText, FileJson, FileCode } from 'lucide-react';
 import { useAppStore } from '@/store';
 import { apiService } from '@/services/api';
 import { ExportFormat } from '@/types';
@@ -32,7 +32,7 @@ export const ResultsView: React.FC = () => {
 
     setExporting(format);
     try {
-      const exportData = await apiService.exportAnalysis(
+      await apiService.exportAnalysis(
         currentAnalysis.analysis_id,
         format
       );

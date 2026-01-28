@@ -8,22 +8,23 @@ echo "================================"
 echo ""
 
 # Check if .env exists
-if [ ! -f .env ]; then
-    echo "⚠️  .env dosyası bulunamadı!"
+if [ ! -f backend/.env ]; then
+    echo "⚠️  backend/.env dosyası bulunamadı!"
     echo ""
-    echo "Lütfen .env dosyası oluşturun:"
+    echo "Lütfen backend/.env dosyası oluşturun:"
     echo ""
-    echo "cat > .env << 'EOF'"
+    echo "cat > backend/.env << 'EOF'"
     echo "GITHUB_TOKEN=your_github_token_here"
     echo "AI_PROVIDER=anthropic"
     echo "ANTHROPIC_API_KEY=your_anthropic_api_key_here"
     echo "OPENAI_API_KEY=your_openai_api_key_here"
+    echo "PERPLEXITY_API_KEY=your_perplexity_api_key_here"
     echo "EOF"
     echo ""
     exit 1
 fi
 
-echo "✅ .env dosyası bulundu"
+echo "✅ backend/.env dosyası bulundu"
 echo ""
 
 # Check if Docker is installed

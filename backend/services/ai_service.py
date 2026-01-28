@@ -67,6 +67,21 @@ class OpenAIProvider(AIProvider):
             self.model = settings.OPENAI_MODEL
         except ImportError:
             raise AIServiceException("openai package not installed. Install with: pip install openai")
+
+
+class PerplexityProvider(AIProvider):
+    """Perplexity AI provider"""
+    
+    def __init__(self, api_key: str):
+        try:
+            from openai import AsyncOpenAI
+            self.client = AsyncOpenAI(
+                api_key=api_key,
+                base_url="https://api.perplexity.ai"
+            )
+            self.model = settings.PERPLEXITY_MODEL
+        except ImportError:
+            raise AIServiceException("openai package not installed. Install with: pip install openai")
     
     async def generate_completion(self, prompt: str, system_prompt: Optional[str] = None) -> str:
         """
@@ -106,7 +121,7 @@ class AIService:
         Initialize AI service
         
         Args:
-            provider: AI provider name ("anthropic" or "openai")
+            provider: AI provider name ("anthropic", "openai", or "perplexity")
         """
         self.provider_name = provider
         
@@ -118,6 +133,10 @@ class AIService:
             if not settings.OPENAI_API_KEY:
                 raise AIServiceException("OPENAI_API_KEY not configured")
             self.provider = OpenAIProvider(settings.OPENAI_API_KEY)
+        elif provider == "perplexity":
+            if not settings.PERPLEXITY_API_KEY:
+                raise AIServiceException("PERPLEXITY_API_KEY not configured")
+            self.provider = PerplexityProvider(settings.PERPLEXITY_API_KEY)
         else:
             raise AIServiceException(f"Unsupported AI provider: {provider}")
         

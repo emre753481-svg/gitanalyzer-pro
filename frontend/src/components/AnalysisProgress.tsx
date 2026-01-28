@@ -10,7 +10,6 @@ export const AnalysisProgress: React.FC = () => {
     currentAnalysis,
     analysisStatus,
     setAnalysisStatus,
-    setIsLoadingStatus,
   } = useAppStore();
 
   useEffect(() => {

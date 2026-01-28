@@ -14,21 +14,23 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "GitAnalyzer Pro"
     DEBUG: bool = False
     
-    # CORS
-    CORS_ORIGINS: list = ["http://localhost:3000", "http://localhost:5173"]
+    # CORS - comma separated string
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
     
     # GitHub Configuration
     GITHUB_TOKEN: Optional[str] = None
     GITHUB_API_URL: str = "https://api.github.com"
     
     # AI Configuration
-    AI_PROVIDER: str = "anthropic"  # "anthropic" or "openai"
+    AI_PROVIDER: str = "anthropic"  # "anthropic", "openai", or "perplexity"
     ANTHROPIC_API_KEY: Optional[str] = None
     OPENAI_API_KEY: Optional[str] = None
+    PERPLEXITY_API_KEY: Optional[str] = None
     
     # Model Configuration
     ANTHROPIC_MODEL: str = "claude-3-5-sonnet-20241022"
     OPENAI_MODEL: str = "gpt-4-turbo-preview"
+    PERPLEXITY_MODEL: str = "llama-3.1-sonar-large-128k-online"
     AI_MAX_TOKENS: int = 8000
     AI_TEMPERATURE: float = 0.7
     
@@ -44,9 +46,14 @@ class Settings(BaseSettings):
     
     # Logging
     LOG_LEVEL: str = "INFO"
-    LOG_FILE: str = "gitanalyzer.log"
+    LOG_FILE: str = "/tmp/gitanalyzer.log"
+    
+    def get_cors_origins(self) -> list:
+        """Get CORS origins as a list"""
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(',')]
     
     class Config:
+        extra = "ignore"
         env_file = ".env"
         case_sensitive = True
 
@@ -56,5 +63,5 @@ settings = Settings()
 
 
 def get_settings() -> Settings:
-    """Get application settings"""
+    """Get settings instance"""
     return settings
